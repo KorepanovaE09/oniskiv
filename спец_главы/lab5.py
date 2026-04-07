@@ -1,4 +1,5 @@
 import numpy as np
+import matplotlib.pyplot as plt
 
 A = 3
 
@@ -91,3 +92,25 @@ MS_2_3 = 1 - cos_2_3
 print(f"MS_1_2: {MS_1_2}")
 print(f"MS_1_3: {MS_1_3}")
 print(f"MS_2_3: {MS_2_3}")
+
+t = np.linspace(0, 1, 500)
+
+# значения функций
+y1 = y_1(A, t)
+y2 = y_2(A, t)
+y3 = y_3(A, t)
+
+# построение графика
+plt.figure(figsize=(8,5))
+
+plt.plot(t, y1, label="y1(t) = A sin(2πt)")
+plt.plot(t, y2, label="y2(t) = A sin(2πt) + t")
+plt.plot(t, y3, label="y3(t) = A sin(πt)")
+
+plt.xlabel("t")
+plt.ylabel("y(t)")
+plt.title("Сравнение временных рядов")
+plt.legend()
+plt.grid(True)
+
+plt.show()
