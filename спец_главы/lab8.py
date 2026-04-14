@@ -64,11 +64,19 @@ for _ in range(2):
 
         # временно делим остаток на 2 части
         rest = shars[i+1:]
-        mid = len(rest)//2
+        rest = shars[i+1:]
 
-        left = current_container
-        middle = rest[:mid]
-        right = rest[mid:]
+        if len(containers) == 0:
+            # первая итерация (как было)
+            mid = len(rest)//2
+            left = current_container
+            middle = rest[:mid]
+            right = rest[mid:]
+        else:
+            # вторая итерация (ВОТ ГЛАВНОЕ ИСПРАВЛЕНИЕ)
+            left = containers[0]           # фиксирован
+            middle = current_container     # растёт
+            right = rest                   # остаток
 
         if len(middle) < 1 or len(right) < 1:
             continue
@@ -97,4 +105,8 @@ for i in containers:
     print(f"{Djunny(i)}: {i}")
 
 print(H_best)
+# print(delta_Djunny(H_rod, Djunny([1, 2, 3, 3, 2, 2, 2]),
+#                    Djunny([3, 1, 1, 1, 2, 2, 3, 3, 3]),
+#                    Djunny([ 1, 2, 1, 1]),
+#                    [[1, 2, 3, 3, 2, 2, 2], [3, 1, 1, 1, 2, 2, 3, 3, 3], [ 1, 2, 1, 1]]))
 print(containers)

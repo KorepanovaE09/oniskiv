@@ -28,37 +28,37 @@ def alpha_betta():
     return alpha, betta
 
 def func_speed(v, alpha, betta, p, x, g):
-    return (v + alpha*(p - x) + betta*(g - x))
+    return (v[0] + alpha*(p[0] - x[0]) + betta*(g[0] - x[0]),
+            v[1] + alpha*(p[1] - x[1]) + betta*(g[1] - x[1]))
 
 def func_coord(x, v, t):
-    return (x + v*t)
+    return (x[0] + v[0] * t, x[1] + v[1] * t)
 
 for i in range(m):
     x = random.uniform(0, 4*np.pi)
     y = random.uniform(0, 4*np.pi)
     points.append((x, y))
 
-    speed.append(random.uniform(0, np.pi/2))
-best_points = points
+    speed.append((random.uniform(-1, 1),  random.uniform(-1, 1)))
 
-g, func = calculate_g(points)
+best_points = points.copy()
+g, g_value = calculate_g(points)
 
 best_func = 100000
 pred_func = 0
 
-while np.abs(best_func - pred_func) > e:
+while abs(best_func - pred_func) > e:
+    alpha, betta = alpha_betta()
     for i in range(N):
-        alpha, betta = alpha_betta()
-        for j in range(m):
-            points[j] = func_coord(points[j], speed[j], i + 1)
-            speed[j] = func_speed(speed[j], alpha, betta, best_points[j], points[j], g)
-            if func(points[j][0], points[j][1]) < func(best_points[j][0], best_points[j][1]):
-                best_points[j] = points[j]
-        g, func = calculate_g(points)
+        points[i] = func_coord(points[i], speed[i], 1)
+        speed[i] = func_speed(speed[i], alpha, betta, best_points[i], points[i], g)
+        if func(points[i][0], points[i][1]) < func(best_points[i][0], best_points[i][1]):
+            best_points[i] = points[i]
+    g, g_value = calculate_g(points)
 
-        if best_func > func: 
-            pred_func = best_func
-            best_func = func
+    if best_func > g_value: 
+        pred_func = best_func
+        best_func = g_value
 
 print(f"Значение функции в точке {g} = {best_func}" )
 
